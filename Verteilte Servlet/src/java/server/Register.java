@@ -19,19 +19,19 @@ import verteilte.db.module.Nutzer;
  *
  * @author mteeken
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login.jsp"})
-public class Login extends HttpServlet {
+@WebServlet(name = "Register", urlPatterns = {"/Register.jsp"})
+public class Register extends HttpServlet {
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException {
         //res.setContentType("text/html;charset=UTF-8");
         HttpSession session = null;
-        if (req.getMethod().equals("GET")) {
+        if (req.getMethod().equals("POST")) {
             String name = req.getParameterValues("name")[0];
             String password = req.getParameterValues("password")[0];
             NutzerController lc = new NutzerController();
             Nutzer n;
             try {
-                n = lc.getUser(name, password);
+                n = lc.setUser(name, password);
                 session = req.getSession(true);
                 session.setAttribute("name", n.getName());
             } catch (PasswordEmptyException e) {

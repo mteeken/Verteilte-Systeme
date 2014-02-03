@@ -5,46 +5,29 @@
 package server;
 
 import java.io.IOException;
-import java.security.DigestException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import verteilte.db.controller.NutzerController;
-import verteilte.db.exceptions.PasswordEmptyException;
-import verteilte.db.module.Nutzer;
+
 /**
  *
  * @author mteeken
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login.jsp"})
-public class Login extends HttpServlet {
+@WebServlet(name = "Logout", urlPatterns = {"/Logout.jsp"})
+public class Logout extends HttpServlet {
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException {
         //res.setContentType("text/html;charset=UTF-8");
         HttpSession session = null;
         if (req.getMethod().equals("GET")) {
-            String name = req.getParameterValues("name")[0];
-            String password = req.getParameterValues("password")[0];
-            NutzerController lc = new NutzerController();
-            Nutzer n;
-            try {
-                n = lc.getUser(name, password);
-                session = req.getSession(true);
-                session.setAttribute("name", n.getName());
-            } catch (PasswordEmptyException e) {
-                    
-            } catch (DigestException e) {
-                
-            } catch (Exception e) {
-                
-            }
+            session = req.getSession();
+            if (session != null && session.getAttribute("name") != null)
+                session.removeAttribute("name");
 
-            if (session != null) {
-                res.sendRedirect("News.jsp");
-            } 
+            res.sendRedirect("index.jsp");
         }
      }
 

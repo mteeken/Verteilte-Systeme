@@ -13,7 +13,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import verteilte.db.module.Nutzer;
-
+import verteilte.db.exceptions.PasswordEmptyException;
+import verteilte.db.exceptions.UsernameEmptyException;
+import verteilte.db.exceptions.PasswordToShortException;
 /**
  *
  * @author mteeken
@@ -23,14 +25,46 @@ public class NutzerController {
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Verteilte_DB_ManagerPU");
     private EntityManager em = emf.createEntityManager();
 
-    public Nutzer getUser(String name, String password) throws DigestException {
+    public Nutzer getUser(String name, String password) throws Exception {
         
+        if (password == null || password.equals(""))
+            throw new PasswordEmptyException();
+
+        if (name == null || name.equals(""))
+            throw new UsernameEmptyException();
+        
+        return em.createNamedQuery("nutzer.find", Nutzer.class)
+                .setParameter("name", name)
+                .setParameter("password", this.hash(password)).getSingleResult();
+    }
+    
+    public Nutzer setUser(String name, String password) throws Exception {
+        
+        if (password == null || password.equals(""))
+            throw new PasswordEmptyException();
+
+        if (password.length() < 5)
+            throw new PasswordToShortException("Minimum password length is five characters");
+        
+        if (name == null || name.equals(""))
+            throw new UsernameEmptyException();
+
+        Nutzer n = new Nutzer(name, this.hash(password));
+
+        em.getTransaction().begin();
+        em.persist(n);
+        em.getTransaction().commit();
+
+        return n;
+    }
+        
+    private String hash(String password) throws DigestException {
+        String result = "";
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA");
             byte[] md = new byte[ 8192 ];
             md = password.getBytes();
-            
-            String result = "";
+
             for (int i=0; i < md.length; i++) {
               result +=
                     Integer.toString( ( md[i] & 0xff ) + 0x100, 16).substring( 1 );
@@ -38,10 +72,7 @@ public class NutzerController {
         } catch (NoSuchAlgorithmException cnse) {
             throw new DigestException("couldn't make digest of partial content");
         }
-
-        return em.createNamedQuery("nutzer.find", Nutzer.class)
-                .setParameter("name", name)
-                .setParameter("password", password).getSingleResult();
+        
+        return result;
     }
-
 }

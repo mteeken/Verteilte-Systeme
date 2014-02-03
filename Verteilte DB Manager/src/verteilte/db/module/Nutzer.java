@@ -22,7 +22,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
     @NamedQuery(name="nutzer.find",
                 query="SELECT n FROM Nutzer WHERE n.name :name AND n.password :password"),
-    @NamedQuery(name="nutzer.search",
+    @NamedQuery(name="nutzer.create",
                 query="SELECT n FROM Nutzer n WHERE n.name :name"),
 })
 public class Nutzer implements Serializable {
@@ -31,6 +31,15 @@ public class Nutzer implements Serializable {
     private String name;
     private String password;
     
+    public Nutzer() {
+
+    }
+
+    public Nutzer(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
     public String getName() {
         return name;
     }
