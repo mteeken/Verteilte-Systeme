@@ -27,9 +27,13 @@ public class NutzerController {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA");
             byte[] md = new byte[ 8192 ];
-            messageDigest.update(md, 0, password);
-            messageDigest.
-            md = messageDigest.digest();
+            md = password.getBytes();
+            
+            String result = "";
+            for (int i=0; i < md.length; i++) {
+              result +=
+                    Integer.toString( ( md[i] & 0xff ) + 0x100, 16).substring( 1 );
+            }
         } catch (NoSuchAlgorithmException cnse) {
             throw new DigestException("couldn't make digest of partial content");
         }
