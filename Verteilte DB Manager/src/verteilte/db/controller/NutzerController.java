@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import verteilte.db.module.Nutzer;
 
 /**
  *
@@ -22,7 +23,7 @@ public class NutzerController {
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Verteilte_DB_ManagerPU");
     private EntityManager em = emf.createEntityManager();
 
-    public void getUser(String name, String password) throws DigestException {
+    public Nutzer getUser(String name, String password) throws DigestException {
         
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA");
@@ -38,8 +39,9 @@ public class NutzerController {
             throw new DigestException("couldn't make digest of partial content");
         }
 
-        
-        password = 
+        return em.createNamedQuery("nutzer.find", Nutzer.class)
+                .setParameter("name", name)
+                .setParameter("password", password).getSingleResult();
     }
 
 }

@@ -20,8 +20,8 @@ import javax.persistence.NamedQuery;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name="nutzer.findAll",
-                query="SELECT n FROM Nutzer n n.name DESC"),
+    @NamedQuery(name="nutzer.find",
+                query="SELECT n FROM Nutzer WHERE n.name :name AND n.password :password"),
     @NamedQuery(name="nutzer.search",
                 query="SELECT n FROM Nutzer n WHERE n.name :name"),
 })
