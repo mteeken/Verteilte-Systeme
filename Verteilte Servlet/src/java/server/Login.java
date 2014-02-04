@@ -12,20 +12,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import verteilte.db.controller.NutzerController;
-import verteilte.db.exceptions.PasswordEmptyException;
-import verteilte.db.module.Nutzer;
+import controller.NutzerController;
+import exceptions.PasswordEmptyException;
+import module.Nutzer;
 /**
  *
  * @author mteeken
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login.jsp"})
+@WebServlet(name = "Login", urlPatterns = {"/login.jsp"})
 public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException {
         //res.setContentType("text/html;charset=UTF-8");
         HttpSession session = null;
-        if (req.getMethod().equals("GET")) {
+        if (req.getMethod().equals("POST")) {
             String name = req.getParameterValues("name")[0];
             String password = req.getParameterValues("password")[0];
             NutzerController lc = new NutzerController();

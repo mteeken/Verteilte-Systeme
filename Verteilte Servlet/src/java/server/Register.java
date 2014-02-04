@@ -5,21 +5,23 @@
 package server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.DigestException;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import verteilte.db.controller.NutzerController;
-import verteilte.db.exceptions.PasswordEmptyException;
-import verteilte.db.module.Nutzer;
+import controller.NutzerController;
+import exceptions.PasswordEmptyException;
+import module.Nutzer;
 /**
  *
  * @author mteeken
  */
-@WebServlet(name = "Register", urlPatterns = {"/Register.jsp"})
+@WebServlet(name = "Register", urlPatterns = {"/register.jsp"})
 public class Register extends HttpServlet {
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException {
@@ -39,7 +41,7 @@ public class Register extends HttpServlet {
             } catch (DigestException e) {
                 
             } catch (Exception e) {
-                
+                e.getMessage();
             }
 
             if (session != null) {
@@ -59,7 +61,33 @@ public class Register extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       
+       response.setContentType("text/html;charset=UTF-8");
+        // Ausgabe setzen
+       ServletOutputStream writer; 
+       writer = response.getOutputStream(); 
+        
+       writer.println("<!DOCTYPE html>");
+       writer.println("<html>");
+       writer.println("<head>");
+            writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
+            writer.println("<title>Terminkalender</title>");
+       writer.println("</head>");
+       writer.println("<body>");
+       writer.println("<h1>Bitte geben sie Ihren Namen und Ihr Passwort ein: </h1>");
+       writer.println("<form action=\"register.jsp\" method=\"POST\">");
+       writer.println("<h2>Bitte geben Sie Ihren Namen ein:</h2>");
+            writer.println("<input type=\"text\" name=\"name\" />");
+            writer.println("<h2>Bitte geben Sie Ihr Passwort ein:</h2>");
+            writer.println("<input type=\"password\" name=\"password\" />");
+            writer.println("<BR /><BR />");
+            writer.println("<input type=\"submit\" value=\"Eingabe\" />");
+        writer.println("</form>");
+        writer.println("<a href=\"login.jsp\">Zum Login</a>");
+        writer.println("</body>");
+        writer.println("</html>");
+        
+      //  writer.close();
     }
 
     /**
@@ -73,5 +101,6 @@ public class Register extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
+        this.doGet(request, response);
     }
 }
