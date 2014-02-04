@@ -12,4 +12,12 @@ package exceptions;
  */
 public class PasswordEmptyException extends Exception {
     
+    public PasswordEmptyException()
+    {
+    }
+    
+    public PasswordEmptyException(String message)
+    {
+        super(message);
+    }
 }

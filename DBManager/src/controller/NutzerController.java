@@ -32,29 +32,37 @@ public class NutzerController {
 
         if (name == null || name.equals(""))
             throw new UsernameEmptyException();
-        
-        return em.createNamedQuery("nutzer.find", Nutzer.class)
+
+        try {
+            return em.createNamedQuery("nutzer.find", Nutzer.class)
                 .setParameter("name", name)
                 .setParameter("password", this.hash(password)).getSingleResult();
+         } catch (Exception e) {
+            throw new Exception("Nutzer konnte nicht gefunden werden");
+        }   
     }
     
     public Nutzer setUser(String name, String password) throws Exception {
         
         if (password == null || password.equals(""))
-            throw new PasswordEmptyException();
+            throw new PasswordEmptyException("Bitte ein Passwort eingeben");
 
         if (password.length() < 5)
             throw new PasswordToShortException("Minimum password length is five characters");
         
         if (name == null || name.equals(""))
-            throw new UsernameEmptyException();
+            throw new UsernameEmptyException("Bitte einen Namen eingeben");
 
         Nutzer n = new Nutzer(name, this.hash(password));
 
-        em.getTransaction().begin();
-        em.persist(n);
-        em.getTransaction().commit();
-
+        try {
+            em.getTransaction().begin();
+            em.persist(n);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new Exception("Nutzer konnte nicht angelegt werden");
+        }
+        
         return n;
     }
         
