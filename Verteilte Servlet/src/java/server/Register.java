@@ -23,9 +23,12 @@ import module.Nutzer;
  */
 @WebServlet(name = "Register", urlPatterns = {"/register.jsp"})
 public class Register extends HttpServlet {
+    
+    private String errorMessage;
+    private Boolean sendRedirect = false;
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException {
-        //res.setContentType("text/html;charset=UTF-8");
+
         HttpSession session = null;
         if (req.getMethod().equals("POST")) {
             String name = req.getParameterValues("name")[0];
@@ -37,14 +40,15 @@ public class Register extends HttpServlet {
                 session = req.getSession(true);
                 session.setAttribute("name", n.getName());
             } catch (PasswordEmptyException e) {
-                    
+                this.errorMessage = e.getMessage();
             } catch (DigestException e) {
-                
+                this.errorMessage = e.getMessage();
             } catch (Exception e) {
-                e.getMessage();
+                this.errorMessage = e.getMessage();
             }
 
             if (session != null) {
+                this.sendRedirect = true;
                 res.sendRedirect("News.jsp");
             } 
         }
@@ -74,6 +78,10 @@ public class Register extends HttpServlet {
             writer.println("<title>Terminkalender</title>");
        writer.println("</head>");
        writer.println("<body>");
+       
+       if (this.errorMessage != null)
+            writer.println("<b>" + this.errorMessage + "</b>");
+       
        writer.println("<h1>Bitte geben sie Ihren Namen und Ihr Passwort ein: </h1>");
        writer.println("<form action=\"register.jsp\" method=\"POST\">");
        writer.println("<h2>Bitte geben Sie Ihren Namen ein:</h2>");
@@ -101,6 +109,8 @@ public class Register extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
-        this.doGet(request, response);
+        
+        if (this.sendRedirect == false)
+            this.doGet(request, response);
     }
 }

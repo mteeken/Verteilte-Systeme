@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import controller.NutzerController;
 import exceptions.PasswordEmptyException;
+import javax.servlet.ServletOutputStream;
 import module.Nutzer;
 /**
  *
@@ -21,9 +22,13 @@ import module.Nutzer;
  */
 @WebServlet(name = "Login", urlPatterns = {"/login.jsp"})
 public class Login extends HttpServlet {
+    
+    private String errorMessage;
+    private Boolean sendRedirect = false;
+    
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
-    throws ServletException, IOException {
-        //res.setContentType("text/html;charset=UTF-8");
+        throws ServletException, IOException {
+
         HttpSession session = null;
         if (req.getMethod().equals("POST")) {
             String name = req.getParameterValues("name")[0];
@@ -35,14 +40,15 @@ public class Login extends HttpServlet {
                 session = req.getSession(true);
                 session.setAttribute("name", n.getName());
             } catch (PasswordEmptyException e) {
-                    
+                this.errorMessage = e.getMessage();
             } catch (DigestException e) {
-                
+                this.errorMessage = e.getMessage();
             } catch (Exception e) {
-                
+                this.errorMessage = e.getMessage();
             }
 
             if (session != null) {
+                this.sendRedirect = true;
                 res.sendRedirect("News.jsp");
             } 
         }
@@ -59,7 +65,35 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+               
+       response.setContentType("text/html;charset=UTF-8");
+        // Ausgabe setzen
+       ServletOutputStream writer; 
+       writer = response.getOutputStream(); 
+        writer.println("<!DOCTYPE html>");
+       writer.println("<html>");
+       writer.println("<head>");
+            writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
+            writer.println("<title>Terminkalender</title>");
+       writer.println("</head>");
+       writer.println("<body>");
+       
+       if (this.errorMessage != null)
+            writer.println("<b>" + this.errorMessage + "</b>");
+       
+       
+       writer.println("<h1>Zum Verwalten der Termine loggen sie sich bitte ein</h1>");
+       writer.println("<form action=\"login.jsp\" method=\"POST\">");
+        writer.println("<h2>Bitte geben Sie Ihren Namen ein:</h2>");
+            writer.println("<input type=\"text\" name=\"name\" />");
+            writer.println("<h2>Bitte geben Sie Ihr Passwort ein:</h2>");
+            writer.println("<input type=\"password\" name=\"password\" />");
+            writer.println("<BR /><BR />");
+            writer.println("<input type=\"submit\" value=\"Eingabe\" />");
+        writer.println("</form>");
+        writer.println("<a href=\"register.jsp\">Registrieren</a>");
+        writer.println("</body>");
+        writer.println("</html>");
     }
 
     /**
@@ -73,5 +107,8 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
+        
+        if (this.sendRedirect == false)
+            this.doGet(request, response);
     }
 }
