@@ -42,6 +42,19 @@ public class NutzerController {
         }   
     }
     
+    public Nutzer getUserByName(String name) throws Exception {
+        
+        if (name == null || name.equals(""))
+            throw new UsernameEmptyException();
+
+        try {
+            return em.createNamedQuery("nutzer.findByName", Nutzer.class)
+                .setParameter("name", name).getSingleResult();
+         } catch (Exception e) {
+            throw new Exception("Nutzer konnte nicht gefunden werden");
+        }   
+    }
+    
     public Nutzer setUser(String name, String password) throws Exception {
         
         if (password == null || password.equals(""))

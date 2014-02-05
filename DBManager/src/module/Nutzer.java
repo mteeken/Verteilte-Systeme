@@ -20,6 +20,8 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
     @NamedQuery(name="nutzer.find",
                 query="SELECT n FROM Nutzer n WHERE n.name like :name AND n.password like :password"),
+    @NamedQuery(name="nutzer.findByName",
+                query="SELECT n FROM Nutzer n WHERE n.name like :name"),
     @NamedQuery(name="nutzer.create",
                 query="SELECT n FROM Nutzer n WHERE n.name like :name"),
 })
