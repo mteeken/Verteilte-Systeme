@@ -49,7 +49,7 @@ public class Login extends HttpServlet {
 
             if (session != null) {
                 this.sendRedirect = true;
-                res.sendRedirect("News.jsp");
+                res.sendRedirect("terminlist.jsp");
             } 
         }
      }

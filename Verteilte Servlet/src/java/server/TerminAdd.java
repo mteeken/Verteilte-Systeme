@@ -16,14 +16,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import module.Terminart;
 import module.Termine;
 
 /**
  *
  * @author mteeken
  */
-@WebServlet(name = "TerminList", urlPatterns = {"/terminlist.jsp"})
-public class TerminList extends HttpServlet {
+@WebServlet(name = "TerminAdd", urlPatterns = {"/addtermin.jsp"})
+public class TerminAdd extends HttpServlet {
     
      private String errorMessage;
      private Boolean sendRedirect = false;
@@ -61,29 +62,38 @@ public class TerminList extends HttpServlet {
        if (this.errorMessage != null)
             writer.println("<b>" + this.errorMessage + "</b>");
        
-       writer.println("<h1>Ihre nächsten Termine: </h1>");
-       
-       TermineController tc = new TermineController();
+       writer.println("<h1>Termin hinzufügen: </h1>");
+
        try {
-            List<Termine> termine = tc.getNextXTermine(10);
-            
-            for (Termine t : termine) {
-                writer.println("<div>");
-                writer.println(t.getTitle());
-                String date_begin = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(t.getDate_begin());
-                String date_end = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").format(t.getDate_end());
-                writer.println("Anfang: " + date_begin);
-                writer.println("Ende: " + date_end);
-                writer.println("</div>");
-            }
+            writer.println("<form action=\"addtermin.jsp\" method=\"POST\">");
+                writer.println("<label for=\"title\">Title:</label>");
+                writer.println("<input type=\"text\" id=\"title\" name=\"title\" />");
+                writer.println("<label for=\"datum_begin\">Anfang:</label>");
+                writer.println("<input type=\"date\" name=\"date_begin\" />");
+                writer.println("<label for=\"datum_begin\">Ende:</label>");
+                writer.println("<input type=\"date\" name=\"date_end\" />");
+                writer.println("<label for=\"datum_begin\">Ort:</label>");
+                writer.println("<input type=\"text\" name=\"ort\" />");
+                writer.println("<label for=\"datum_begin\">Art:</label>");
+                writer.println("<select name=\"art\">");
+                    writer.println("<option value=\""+ Terminart.BIRTHDAY +"\">Geburtstag</option>");    
+                    writer.println("<option value=\""+ Terminart.FREETIME +"\">Freie Zeit</option>");    
+                    writer.println("<option value=\""+ Terminart.HOLIDAY +"\">Ferien</option>");    
+                    writer.println("<option value=\""+ Terminart.WORK +"\">Arbeit</option>");    
+                writer.println("</select>");
+                writer.println("<BR /><BR />");
+                writer.println("<input type=\"submit\" value=\"Eingabe\" />");
+            writer.println("</form>");
+
+            writer.println("</form>");
         } catch (Exception e) {
             writer.println("<h2>" + e.getMessage() + "</h2>");
         }
-        writer.println("<a href=\"addtermin.jsp\">Termin anlegen</a>");
+
         writer.println("</body>");
         writer.println("</html>");
     }
-
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
