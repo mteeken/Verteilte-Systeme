@@ -59,10 +59,10 @@ public class Termine implements Serializable {
         
     }
     
-    public Termine(String date_begin, String date_end, String title,
+    public Termine(String title, String date_begin, String date_end,
            String ort, Terminart art, Nutzer n) throws ParseException {
 
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date dateBegin = isoFormat.parse(date_begin);
         Date dateEnd = isoFormat.parse(date_end);
