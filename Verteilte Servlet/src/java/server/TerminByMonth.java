@@ -8,7 +8,9 @@ package server;
 
 import controller.TermineController;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -22,12 +24,11 @@ import module.Termine;
  *
  * @author mteeken
  */
-@WebServlet(name = "TerminList", urlPatterns = {"/terminlist.jsp"})
-public class TerminList extends HttpServlet {
+@WebServlet(name = "TerminByMonth", urlPatterns = {"/month.jsp"})
+public class TerminByMonth extends HttpServlet {
     
-     private String errorMessage;
-     private Boolean sendRedirect = false;
-    
+    private String errorMessage;
+    private Boolean sendRedirect = false;
          
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException {
@@ -45,27 +46,37 @@ public class TerminList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
        
-       response.setContentType("text/html;charset=UTF-8");
-        // Ausgabe setzen
-       ServletOutputStream writer; 
-       writer = response.getOutputStream(); 
-        
-       writer.println("<!DOCTYPE html>");
-       writer.println("<html>");
-       writer.println("<head>");
-            writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-            writer.println("<title>Terminkalender</title>");
-       writer.println("</head>");
-       writer.println("<body>");
-       
-       if (this.errorMessage != null)
+        response.setContentType("text/html;charset=UTF-8");
+         // Ausgabe setzen
+        ServletOutputStream writer; 
+        writer = response.getOutputStream(); 
+
+        writer.println("<!DOCTYPE html>");
+        writer.println("<html>");
+        writer.println("<head>");
+             writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
+             writer.println("<title>Terminkalender</title>");
+        writer.println("</head>");
+        writer.println("<body>");
+        Integer month;
+
+        if (this.errorMessage != null)
             writer.println("<b>" + this.errorMessage + "</b>");
-       
-       writer.println("<h1>Ihre nächsten Termine: </h1>");
-       
+
+        if (request.getParameterValues("month") != null) {
+            month = Integer.parseInt(request.getParameterValues("month")[0]);  
+        } else {
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+            Calendar c = df.getCalendar();
+            c.setTimeInMillis(System.currentTimeMillis());
+            month = c.MONTH;
+        }
+
        TermineController tc = new TermineController();
+       writer.println("<h1>Ihre Termine im " + tc.getMonat(month) + ": </h1>");
+
        try {
-            List<Termine> termine = tc.getNextXTermine(10);
+            List<Termine> termine = tc.getByMonth(month);
             
             for (Termine t : termine) {
                 writer.println("<div>");
