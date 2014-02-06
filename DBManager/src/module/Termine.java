@@ -34,8 +34,8 @@ import javax.persistence.NamedQuery;
                 query="SELECT t FROM Termine t WHERE t.date_begin > :date"),
     @NamedQuery(name="termine.find",
                 query="SELECT t FROM Termine t WHERE t.id = :id"),
-    @NamedQuery(name="termine.search",
-                query="SELECT t FROM Termine t WHERE t.id like :id"),
+    @NamedQuery(name="termine.findByMonth",
+                query="SELECT t FROM Termine t WHERE t.date_begin >= :date_begin AND t.date_end < :date_end"),
 })
 public class Termine implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -87,16 +87,22 @@ public class Termine implements Serializable {
         return date_begin;
     }
 
-    public void setDate_begin(Timestamp date_begin) {
-        this.date_begin = date_begin;
+    public void setDate_begin(String date_begin) throws ParseException {
+        
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        this.date_begin = new Timestamp(isoFormat.parse(date_begin).getTime());
     }
 
     public Timestamp getDate_end() {
         return date_end;
     }
 
-    public void setDate_end(Timestamp date_end) {
-        this.date_end = date_end;
+    public void setDate_end(String date_end)throws ParseException {
+        
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        this.date_end = new Timestamp(isoFormat.parse(date_end).getTime());
     }
 
     public String getTitle() {
