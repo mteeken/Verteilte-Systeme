@@ -8,3 +8,49 @@ and open the template in the editor.
     Author     : mteeken
 */
 
+body {
+    background-color: #fefefe;
+    font-size: 12px;
+}
+
+h1 {
+    font-size: 18px;
+    margin:5px 0px;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 14px;
+    margin:5px 0px;
+    font-weight: bold;
+}
+
+label {
+    font-size:13px;
+    float:left;
+    width:200px;
+}
+
+input {
+    font-size:12px;
+    float:left;
+    width:200px;
+}
+
+input[type=submit] {
+    font-size:12px;
+    float:left;
+    margin-left:200px;
+    width:200px;
+}
+
+.wrapper {
+    margin: 5px auto;
+    width:800px;
+    border: 1px solid #000000;
+    background-color: #eeeeee;
+}
+
+.wrapper .spacer {
+    padding:5px;
+}

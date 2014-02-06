@@ -91,15 +91,19 @@ public class Modify extends HttpServlet {
         writer.println("<!DOCTYPE html>");
         writer.println("<html>");
         writer.println("<head>");
+            writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/custom.css\">");
             writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
             writer.println("<title>Terminkalender</title>");
         writer.println("</head>");
         writer.println("<body>");
 
+        writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
+        writer.println("<h1>Terminkalender</h1><BR />");
+        
         if (this.errorMessage != null)
             writer.println("<b>" + this.errorMessage + "</b>");
-
-        writer.println("<h1>Termin ändern: </h1>");
+        
+        writer.println("<h2>Termin ändern: </h2>");
         
         try {
             Integer id = Integer.parseInt(request.getParameterValues("id")[0]);  
@@ -111,13 +115,13 @@ public class Modify extends HttpServlet {
             writer.println("<form action=\"modify.jsp\" method=\"POST\">");
                 writer.println("<input type=\"hidden\" name=\"id\" value=\"" + t.getId() + "\" /><br>");
                 writer.println("<label for=\"title\">Title:</label>");
-                writer.println("<input type=\"text\" id=\"title\" name=\"title\" value=\"" + t.getTitle() + "\" /><br>");
+                writer.println("<input type=\"text\" id=\"title\" name=\"title\" value=\"" + t.getTitle() + "\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Anfang:</label>");
-                writer.println("<input type=\"date\" name=\"date_begin\" value=\"" + t.getDate_begin().toString() + "\" /><br>");
+                writer.println("<input type=\"date\" name=\"date_begin\" value=\"" + t.getDate_begin().toString() + "\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Ende:</label>");
-                writer.println("<input type=\"date\" name=\"date_end\" value=\"" + t.getDate_begin().toString() + "\" /><br>");
+                writer.println("<input type=\"date\" name=\"date_end\" value=\"" + t.getDate_begin().toString() + "\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Ort:</label>");
-                writer.println("<input type=\"text\" name=\"ort\" value=\"" + t.getOrt().toString() + "\" /><br>");
+                writer.println("<input type=\"text\" name=\"ort\" value=\"" + t.getOrt().toString() + "\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Art:</label>");
                 writer.println("<select name=\"art\">");
                     writer.println("<option value=\""+ Terminart.BIRTHDAY +"\" selected=\"" + t.getArt().equals(Terminart.BIRTHDAY) + "\" >Geburtstag</option>");    
@@ -133,7 +137,11 @@ public class Modify extends HttpServlet {
         } catch (Exception e) {
             writer.println("<h2>" + e.getMessage() + "</h2>");
         }
-
+        
+        writer.println("<br/><br/>");
+        writer.println("<a href=\"terminlist.jsp\">Nächste 10 Termine</a><br/>");
+        writer.println("<a href=\"month.jsp\">Termin des Monats</a>");
+        writer.println("</div></div>");
         writer.println("</body>");
         writer.println("</html>");
     }

@@ -69,29 +69,33 @@ public class Login extends HttpServlet {
        response.setContentType("text/html;charset=UTF-8");
         // Ausgabe setzen
        ServletOutputStream writer; 
-       writer = response.getOutputStream(); 
+        writer = response.getOutputStream(); 
         writer.println("<!DOCTYPE html>");
-       writer.println("<html>");
-       writer.println("<head>");
+        writer.println("<html>");
+        writer.println("<head>");
+            writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/custom.css\">");
             writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
             writer.println("<title>Terminkalender</title>");
-       writer.println("</head>");
-       writer.println("<body>");
+        writer.println("</head>");
+        writer.println("<body>");
        
        if (this.errorMessage != null)
             writer.println("<b>" + this.errorMessage + "</b>");
-       
-       
-       writer.println("<h1>Zum Verwalten der Termine loggen sie sich bitte ein</h1>");
-       writer.println("<form action=\"login.jsp\" method=\"POST\">");
-        writer.println("<h2>Bitte geben Sie Ihren Namen ein:</h2>");
-            writer.println("<input type=\"text\" name=\"name\" />");
-            writer.println("<h2>Bitte geben Sie Ihr Passwort ein:</h2>");
-            writer.println("<input type=\"password\" name=\"password\" />");
+        writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
+        writer.println("<h1>Terminkalender</h1><BR />");
+        writer.println("<h2>Zum Verwalten der Termine loggen sie sich bitte ein</h2>");
+        writer.println("<form action=\"login.jsp\" method=\"POST\">");
+        writer.println("<label for=\"name\">Name:</label>");
+            writer.println("<input type=\"text\" name=\"name\" id=\"name\" />");
+            writer.println("<BR /><BR />");
+            writer.println("<label for=\"password\">Passwort:</label>");
+            writer.println("<input type=\"password\" name=\"password\" id=\"password\" />");
             writer.println("<BR /><BR />");
             writer.println("<input type=\"submit\" value=\"Eingabe\" />");
+            writer.println("<BR /><BR />");
         writer.println("</form>");
         writer.println("<a href=\"register.jsp\">Registrieren</a>");
+        writer.println("</div></div>");
         writer.println("</body>");
         writer.println("</html>");
     }

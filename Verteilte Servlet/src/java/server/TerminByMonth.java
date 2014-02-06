@@ -54,12 +54,16 @@ public class TerminByMonth extends HttpServlet {
         writer.println("<!DOCTYPE html>");
         writer.println("<html>");
         writer.println("<head>");
-             writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-             writer.println("<title>Terminkalender</title>");
+            writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/custom.css\">");
+            writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
+            writer.println("<title>Terminkalender</title>");
         writer.println("</head>");
         writer.println("<body>");
         Integer month;
 
+        writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
+        writer.println("<h1>Terminkalender</h1><BR />");
+        
         if (this.errorMessage != null)
             writer.println("<b>" + this.errorMessage + "</b>");
 
@@ -73,7 +77,7 @@ public class TerminByMonth extends HttpServlet {
         }
 
        TermineController tc = new TermineController();
-       writer.println("<h1>Ihre Termine im " + tc.getMonat(month) + ": </h1>");
+       writer.println("<h2>Ihre Termine im " + tc.getMonat(month) + ": </h2>");
 
        try {
             List<Termine> termine = tc.getByMonth(month);
@@ -92,8 +96,10 @@ public class TerminByMonth extends HttpServlet {
         } catch (Exception e) {
             writer.println("<h2>" + e.getMessage() + "</h2>");
         }
-        writer.println("<a href=\"addtermin.jsp\">Termin anlegen</a>");
-        writer.println("<a href=\"month.jsp\">Termin des Monats</a>");
+        writer.println("<br/><br/>");
+        writer.println("<a href=\"addtermin.jsp\">Termin anlegen</a><br/>");
+        writer.println("<a href=\"terminlist.jsp\">Nächste 10 Termine</a>");
+        writer.println("</div></div>");
         writer.println("</body>");
         writer.println("</html>");
     }

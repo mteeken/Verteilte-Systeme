@@ -87,29 +87,33 @@ public class TerminAdd extends HttpServlet {
        ServletOutputStream writer; 
        writer = response.getOutputStream(); 
         
-       writer.println("<!DOCTYPE html>");
-       writer.println("<html>");
-       writer.println("<head>");
+        writer.println("<!DOCTYPE html>");
+        writer.println("<html>");
+        writer.println("<head>");
+            writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/custom.css\">");
             writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
             writer.println("<title>Terminkalender</title>");
-       writer.println("</head>");
-       writer.println("<body>");
+        writer.println("</head>");
+        writer.println("<body>");
        
-       if (this.errorMessage != null)
+        writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
+        writer.println("<h1>Terminkalender</h1><BR />");
+        
+        if (this.errorMessage != null)
             writer.println("<b>" + this.errorMessage + "</b>");
        
-       writer.println("<h1>Termin hinzufügen: </h1>");
+        writer.println("<h2>Termin hinzufügen: </h2>");
 
-       try {
+        try {
             writer.println("<form action=\"addtermin.jsp\" method=\"POST\">");
                 writer.println("<label for=\"title\">Title:</label>");
-                writer.println("<input type=\"text\" id=\"title\" name=\"title\" /><br>");
+                writer.println("<input type=\"text\" id=\"title\" name=\"title\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Anfang:</label>");
-                writer.println("<input type=\"date\" name=\"date_begin\" /><br>");
+                writer.println("<input type=\"date\" name=\"date_begin\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Ende:</label>");
-                writer.println("<input type=\"date\" name=\"date_end\" /><br>");
+                writer.println("<input type=\"date\" name=\"date_end\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Ort:</label>");
-                writer.println("<input type=\"text\" name=\"ort\" /><br>");
+                writer.println("<input type=\"text\" name=\"ort\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Art:</label>");
                 writer.println("<select name=\"art\">");
                     writer.println("<option value=\""+ Terminart.BIRTHDAY +"\">Geburtstag</option>");    
@@ -125,6 +129,11 @@ public class TerminAdd extends HttpServlet {
         } catch (Exception e) {
             writer.println("<h2>" + e.getMessage() + "</h2>");
         }
+
+        writer.println("<br/><br/>");
+        writer.println("<a href=\"terminlist.jsp\">Nächste 10 Termine</a><br/>");
+        writer.println("<a href=\"month.jsp\">Termin des Monats</a>");
+        writer.println("</div></div>");
 
         writer.println("</body>");
         writer.println("</html>");

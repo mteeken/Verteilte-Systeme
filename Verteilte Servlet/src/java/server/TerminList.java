@@ -45,44 +45,50 @@ public class TerminList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
        
-       response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         // Ausgabe setzen
-       ServletOutputStream writer; 
-       writer = response.getOutputStream(); 
+        ServletOutputStream writer; 
+        writer = response.getOutputStream(); 
         
-       writer.println("<!DOCTYPE html>");
-       writer.println("<html>");
-       writer.println("<head>");
+        writer.println("<!DOCTYPE html>");
+        writer.println("<html>");
+        writer.println("<head>");
+            writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/custom.css\">");
             writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
             writer.println("<title>Terminkalender</title>");
-       writer.println("</head>");
-       writer.println("<body>");
-       
-       if (this.errorMessage != null)
+        writer.println("</head>");
+        writer.println("<body>");
+
+        writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
+        writer.println("<h1>Terminkalender</h1><BR />");
+        
+        if (this.errorMessage != null)
             writer.println("<b>" + this.errorMessage + "</b>");
-       
-       writer.println("<h1>Ihre nächsten Termine: </h1>");
-       
-       TermineController tc = new TermineController();
-       try {
-            List<Termine> termine = tc.getNextXTermine(10);
-            
-            for (Termine t : termine) {
-                writer.println("<div>");
-                writer.println(t.getTitle());
-                String date_begin = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_begin());
-                String date_end = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_end());
-                writer.println("Anfang: " + date_begin);
-                writer.println("Ende: " + date_end);
-                writer.println("<a href=\"delete.jsp?id=" + t.getId() + "\">Termin löschen</a>");
-                writer.println("<a href=\"modify.jsp?id=" + t.getId() + "\">Termin bearbeiten</a>");
-                writer.println("</div>");
-            }
+        
+        writer.println("<h2>Ihre nächsten Termine: </h2>");
+
+        TermineController tc = new TermineController();
+        try {
+             List<Termine> termine = tc.getNextXTermine(10);
+
+             for (Termine t : termine) {
+                 writer.println("<div>");
+                 writer.println(t.getTitle());
+                 String date_begin = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_begin());
+                 String date_end = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_end());
+                 writer.println("Anfang: " + date_begin);
+                 writer.println("Ende: " + date_end);
+                 writer.println("<a href=\"delete.jsp?id=" + t.getId() + "\">Termin löschen</a>");
+                 writer.println("<a href=\"modify.jsp?id=" + t.getId() + "\">Termin bearbeiten</a>");
+                 writer.println("</div>");
+             }
         } catch (Exception e) {
             writer.println("<h2>" + e.getMessage() + "</h2>");
         }
-        writer.println("<a href=\"addtermin.jsp\">Termin anlegen</a>");
+        writer.println("<br/><br/>");
+        writer.println("<a href=\"addtermin.jsp\">Termin anlegen</a><br/>");
         writer.println("<a href=\"month.jsp\">Termin des Monats</a>");
+        writer.println("</div></div>");
         writer.println("</body>");
         writer.println("</html>");
     }
