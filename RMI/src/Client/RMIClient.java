@@ -30,6 +30,7 @@ public class RMIClient {
     public static void main(String args[]){
       RMIClient rmi =  new RMIClient();
       rmi.verbindungHerstellen();
+      rmi.dialog();
     }
     
     private void verbindungHerstellen(){
