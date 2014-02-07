@@ -55,11 +55,17 @@ public class NutzerController {
         }   
     }
     
-    public Nutzer setUser(String name, String password) throws Exception {
+    public Nutzer setUser(String name, String password, String password_repeat) throws Exception {
         
         if (password == null || password.equals(""))
             throw new PasswordEmptyException("Bitte ein Passwort eingeben");
+        
+        if (password_repeat == null || password_repeat.equals(""))
+            throw new PasswordEmptyException("Bitte wiederhole Sie ihr Passwort eingeben");
 
+        if (password_repeat.equals(password))
+            throw new IllegalArgumentException("Ihre Passwörter stimmen nicht überein");
+        
         if (password.length() < 5)
             throw new PasswordToShortException("Minimum password length is five characters");
         

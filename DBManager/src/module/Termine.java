@@ -35,7 +35,7 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name="termine.find",
                 query="SELECT t FROM Termine t WHERE t.id = :id"),
     @NamedQuery(name="termine.findByMonth",
-                query="SELECT t FROM Termine t WHERE t.date_begin >= :date_begin AND t.date_end < :date_end"),
+                query="SELECT t FROM Termine t WHERE t.date_begin >= :date_begin AND t.date_end < :date_end ORDER BY t.date_begin ASC"),
 })
 public class Termine implements Serializable {
     private static final long serialVersionUID = 1L;
