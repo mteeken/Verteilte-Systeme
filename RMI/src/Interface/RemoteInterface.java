@@ -18,5 +18,6 @@ public interface RemoteInterface extends Remote {
     public boolean terminBearbeiten() throws RemoteException;
     public boolean termineAnzeigen() throws RemoteException;
     public boolean terminLoeschen() throws RemoteException;
+    public boolean registrieren(String username,String passwort) throws RemoteException;
     
 }
