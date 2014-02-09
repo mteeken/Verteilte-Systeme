@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import module.Termine;
 
 /**
@@ -44,7 +45,11 @@ public class TerminList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       
+        HttpSession session = request.getSession();
+        if (session == null) {
+            response.sendRedirect("index.jsp");
+        }
+
         response.setContentType("text/html;charset=UTF-8");
         // Ausgabe setzen
         ServletOutputStream writer; 
@@ -60,6 +65,7 @@ public class TerminList extends HttpServlet {
         writer.println("<body>");
 
         writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
+        writer.println("<a href=\"logout.jsp\">Ausloggen</a><br/>");
         writer.println("<h1>Terminkalender</h1><BR />");
         
         if (this.errorMessage != null)
@@ -69,19 +75,21 @@ public class TerminList extends HttpServlet {
 
         TermineController tc = new TermineController();
         try {
-             List<Termine> termine = tc.getNextXTermine(10);
+            String name = session.getAttribute("name").toString();
+            
+            List<Termine> termine = tc.getNextXTermine(name, 10);
 
-             for (Termine t : termine) {
-                 writer.println("<div>");
-                 writer.println(t.getTitle());
-                 String date_begin = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_begin());
-                 String date_end = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_end());
-                 writer.println("Anfang: " + date_begin);
-                 writer.println("Ende: " + date_end);
-                 writer.println("<a href=\"delete.jsp?id=" + t.getId() + "\">Termin löschen</a>");
-                 writer.println("<a href=\"modify.jsp?id=" + t.getId() + "\">Termin bearbeiten</a>");
-                 writer.println("</div>");
-             }
+            for (Termine t : termine) {
+                writer.println("<div>");
+                writer.println(t.getTitle());
+                String date_begin = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_begin());
+                String date_end = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_end());
+                writer.println("Anfang: " + date_begin);
+                writer.println("Ende: " + date_end);
+                writer.println("<a href=\"delete.jsp?id=" + t.getId() + "\">Termin löschen</a>");
+                writer.println("<a href=\"modify.jsp?id=" + t.getId() + "\">Termin bearbeiten</a>");
+                writer.println("</div>");
+            }
         } catch (Exception e) {
             writer.println("<h2>" + e.getMessage() + "</h2>");
         }

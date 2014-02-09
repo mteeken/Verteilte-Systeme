@@ -21,9 +21,7 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name="nutzer.find",
                 query="SELECT n FROM Nutzer n WHERE n.name like :name AND n.password like :password"),
     @NamedQuery(name="nutzer.findByName",
-                query="SELECT n FROM Nutzer n WHERE n.name like :name"),
-    @NamedQuery(name="nutzer.create",
-                query="SELECT n FROM Nutzer n WHERE n.name like :name"),
+                query="SELECT n FROM Nutzer n WHERE n.name like :name")
 })
 public class Nutzer implements Serializable {
     private static final long serialVersionUID = 1L;

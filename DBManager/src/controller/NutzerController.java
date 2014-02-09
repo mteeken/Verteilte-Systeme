@@ -63,7 +63,7 @@ public class NutzerController {
         if (password_repeat == null || password_repeat.equals(""))
             throw new PasswordEmptyException("Bitte wiederhole Sie ihr Passwort eingeben");
 
-        if (password_repeat.equals(password))
+        if (!password_repeat.equals(password))
             throw new IllegalArgumentException("Ihre Passwörter stimmen nicht überein");
         
         if (password.length() < 5)

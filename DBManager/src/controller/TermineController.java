@@ -47,21 +47,22 @@ public class TermineController {
         monate.add("Dezember");
     }
     
-    public Termine getTermin(Integer id) throws Exception {
+    public Termine getTermin(String username, Integer id) throws Exception {
         
         if (id == null) {
             throw new TerminIDEmptyException();
         }
 
         try {
+            Nutzer n = new NutzerController().getUserByName(username);
             return em.createNamedQuery("termine.find", Termine.class)
-                .setParameter("id", id).getSingleResult();
+                .setParameter("id", id).setParameter("user", n).getSingleResult();
         } catch (Exception e) {
             throw new Exception("Termin konnte nicht gefunden werden");
         }   
     }
     
-    public List<Termine> getNextXTermine(int nummer) throws Exception {
+    public List<Termine> getNextXTermine(String username, int nummer) throws Exception {
 
         if (nummer <= 0) {
             throw new InvalidParameterException();
@@ -75,20 +76,30 @@ public class TermineController {
         calendar.set(Calendar.MILLISECOND, 0);
         Date date = calendar.getTime();
         try {
+            Nutzer n = new NutzerController().getUserByName(username);
             return em.createNamedQuery("termine.findNextX", Termine.class)
                 .setParameter("date", date)
-                .setMaxResults(nummer).getResultList();
+                .setParameter("user", n)
+                .setMaxResults(nummer)
+                .getResultList();
         } catch (Exception e) {
             throw new Exception("Keine Termine vorhanden");
         }
     }
     
     
-   public List<Termine> getAllTermine() throws Exception{
-       return this.em.createQuery("Select t FROM Termine t", Termine.class).getResultList();
+   public List<Termine> getAllTermine(String username) throws Exception{
+        try {
+            Nutzer n = new NutzerController().getUserByName(username);
+            return this.em.createQuery("Select t FROM Termine t", Termine.class)
+                    .setParameter("user", n)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new Exception("Keine Termine vorhanden");
+        }
    }
     
-    public List<Termine> getByMonth(int month) throws Exception {
+    public List<Termine> getByMonth(String username, int month) throws Exception {
 
         if (month <= 0) {
             throw new InvalidParameterException();
@@ -106,16 +117,18 @@ public class TermineController {
         calendar.set(Calendar.MONTH, month);
         Date date_end = calendar.getTime();
         try {
+            Nutzer n = new NutzerController().getUserByName(username);
             return em.createNamedQuery("termine.findByMonth", Termine.class)
                 .setParameter("date_begin", date_begin)
                 .setParameter("date_end", date_end)
+                .setParameter("user", n)
                 .getResultList();
         } catch (Exception e) {
             throw new Exception("Keine Termine vorhanden");
         }
     }
     
-    public void setTermin(String date_begin, String date_end, String title,
+    public void setTermin(String title, String date_begin, String date_end, 
            String ort, Terminart art, String username) throws Exception {
 
         if (date_begin == null || date_end == null)
