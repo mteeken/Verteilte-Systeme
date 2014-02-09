@@ -91,7 +91,7 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
     @Override
     public boolean registrieren(String username, String passwort) throws RemoteException {
         try{
-            this.nutzer.setUser(username, passwort);
+            this.nutzer.setUser(username, passwort,passwort);
             return true;
         }catch(UsernameEmptyException ue){
                 System.out.println("Username leer");

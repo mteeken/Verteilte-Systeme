@@ -6,17 +6,27 @@
 
 package dbmanager;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author mteeken
  */
 public class DBManager {
 
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Verteilte_DB_ManagerPU");
+    private EntityManager em = emf.createEntityManager();
+    public void init() {
+        em.getTransaction().begin();
+        em.getTransaction().commit();
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        DBManager vm = new DBManager();
+        vm.init();
     }
-    
 }

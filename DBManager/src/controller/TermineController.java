@@ -83,6 +83,11 @@ public class TermineController {
         }
     }
     
+    
+   public List<Termine> getAllTermine() throws Exception{
+       return this.em.createQuery("Select t FROM Termine t", Termine.class).getResultList();
+   }
+    
     public List<Termine> getByMonth(int month) throws Exception {
 
         if (month <= 0) {
@@ -118,7 +123,7 @@ public class TermineController {
         
         try {
             Nutzer n = new NutzerController().getUserByName(username);
-            Termine t = new Termine(date_begin, date_end, title, ort, art, n);
+            Termine t = new Termine(title,date_begin, date_end, ort, art, n);
             em.getTransaction().begin();
             em.persist(t);
             em.getTransaction().commit();

@@ -6,9 +6,9 @@
     <class>module.Termine</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/VSHausarbeit"/>
-      <property name="javax.persistence.jdbc.password" value="VSHausarbeit"/>
+      <property name="javax.persistence.jdbc.password" value="vshausarbeit"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-      <property name="javax.persistence.jdbc.user" value="VSHausarbeit"/>
+      <property name="javax.persistence.jdbc.user" value="vshausarbeit"/>
     </properties>
   </persistence-unit>
 </persistence>
