@@ -29,7 +29,6 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
     private Nutzer aktuellerNutzer;
     
     public ServerImplementation() throws RemoteException{
-        super();
     }
     
 
@@ -58,7 +57,7 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
     @Override
     public boolean terminAnlegen(String date_begin, String date_end, String title,  String ort, Terminart art) throws RemoteException {
        try{
-           this.termine.setTermin(date_begin, date_end, title, ort, art, this.aktuellerNutzer.getName());
+           this.termine.setTermin(title, date_begin,date_end,ort,art,this.aktuellerNutzer.getName());
            return true;
        }catch(TerminWithNoDateException t){
            System.out.println("Termin hat keine Daten");
@@ -79,8 +78,13 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
     }
 
     @Override
-    public List<Termine> termineAnzeigen() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Termine> termineAnzeigenStart(String username) throws RemoteException {
+        try{
+            return this.termine.getAllTermine(username);
+        }catch(Exception e){
+            System.out.println("Keine Termine vorhanden");
+            return null;
+        }
     }
 
     @Override

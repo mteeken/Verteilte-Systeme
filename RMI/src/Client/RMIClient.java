@@ -11,7 +11,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 import module.Terminart;
+import module.Termine;
 
 /**
  *
@@ -21,6 +23,8 @@ public class RMIClient {
     private Registry registry;
     private RemoteInterface remote;
     private final EinUndAusgabe io;
+    private String username;
+    private List<Termine> termine = null;
     
     public RMIClient(){
         this.io = new EinUndAusgabe();
@@ -85,23 +89,38 @@ public class RMIClient {
     }
     
     private void anmelden(){
-        String username;
         String passwort;
         Boolean login;
         try{
             System.out.println("Nutzernamen eingeben");
-            username = this.io.leseString();
+            this.username = this.io.leseString();
             System.out.println("Passwort eingeben");
             passwort = this.io.leseString();
-            login = this.remote.login(username, passwort);
+            login = this.remote.login(this.username, passwort);
             if(login){
                System.out.println("Sie wurden eingeloggt!");
+               this.termineAnzeigen();
                this.eingeloggtDialog();
             }else{
                 System.out.println("Da ist etwas schief gelaufen");
             }
         }catch(RemoteException re){
             System.out.println("Verbindung nicht möglich");
+        }
+    }
+    
+    public void termineAnzeigen(){
+        try{
+          this.termine = this.remote.termineAnzeigenStart(this.username);
+          if(termine==null){
+              System.out.println("Keine Termine vorhanden");
+          }else{
+              for(Termine t : this.termine){
+                  t.toString();
+              }
+          }
+        }catch(RemoteException re){
+            
         }
     }
     
@@ -137,7 +156,6 @@ public class RMIClient {
                 System.out.println("Etwas ist schief gelaufen");
             }
         }catch(RemoteException re){
-        
         }
     }
     

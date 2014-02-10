@@ -17,10 +17,10 @@ import module.Termine;
 public interface RemoteInterface extends Remote {
     public boolean login(String username,String password) throws RemoteException;
     public boolean logout() throws RemoteException;
-    public boolean terminAnlegen(String date_begin, String date_end, String title,
+    public boolean terminAnlegen(String title, String date_begin, String date_end, 
            String ort, Terminart art) throws RemoteException;
     public boolean terminBearbeiten() throws RemoteException;
-    public List<Termine> termineAnzeigen() throws RemoteException;
+    public List<Termine> termineAnzeigenStart(String username) throws RemoteException;
     public boolean terminLoeschen() throws RemoteException;
     public boolean registrieren(String username,String passwort) throws RemoteException;
     

@@ -159,7 +159,8 @@ public class Termine implements Serializable {
 
     @Override
     public String toString() {
-        return "bean.termine[ id=" + id + " ]";
+        return "("+this.id+")"+" "+this.title+"\n Start: "+this.date_begin
+                  +"\nEnde: "+this.date_end+"\nOrt: "+this.ort;
     }
     
 }
