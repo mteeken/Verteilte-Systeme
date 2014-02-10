@@ -33,10 +33,11 @@ public class Register extends HttpServlet {
         if (req.getMethod().equals("POST")) {
             String name = req.getParameterValues("name")[0];
             String password = req.getParameterValues("password")[0];
+            String password_repeat = req.getParameterValues("password_repeat")[0];
             NutzerController lc = new NutzerController();
             Nutzer n;
             try {
-                n = lc.setUser(name, password);
+                n = lc.setUser(name, password, password_repeat);
                 session = req.getSession(true);
                 session.setAttribute("name", n.getName());
             } catch (PasswordEmptyException e) {
@@ -79,18 +80,23 @@ public class Register extends HttpServlet {
            writer.println("<title>Terminkalender</title>");
        writer.println("</head>");
        writer.println("<body>");
-       
-       if (this.errorMessage != null)
-            writer.println("<b>" + this.errorMessage + "</b>");
+
        writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
        writer.println("<h1>Terminkalender</h1><BR />");
+       
+       if (this.errorMessage != null)
+            writer.println("<b>" + this.errorMessage + "</b><br/>");
+       
        writer.println("<h2>Bitte geben sie Ihren Namen und Ihr Passwort ein: </h2>");
        writer.println("<form action=\"register.jsp\" method=\"POST\">");
-       writer.println("<label for=\"name\">Bitte geben Sie Ihren Namen ein:</label>");
+       writer.println("<label for=\"name\">Namen:</label>");
             writer.println("<input type=\"text\" name=\"name\" id=\"name\"/>");
             writer.println("<BR /><BR />");
-            writer.println("<label for=\"password\">Bitte geben Sie Ihr Passwort ein:</label>");
+            writer.println("<label for=\"password\">Passwort:</label>");
             writer.println("<input type=\"password\" name=\"password\" id=\"password\"/>");
+            writer.println("<BR /><BR />");
+            writer.println("<label for=\"password_repeat\">Passwort wiederholung:</label>");
+            writer.println("<input type=\"password\" name=\"password_repeat\" id=\"password_repeat\"/>");
             writer.println("<BR /><BR />");
             writer.println("<input type=\"submit\" value=\"Eingabe\" />");
             writer.println("<BR /><BR />");

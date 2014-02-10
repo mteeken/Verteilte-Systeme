@@ -29,13 +29,13 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name="termine.findAll",
-                query="SELECT t FROM Termine t WHERE t.user = :user ORDER BY t.id DESC"),
+                query="SELECT t FROM Termine t WHERE t.user.name = :username ORDER BY t.id DESC"),
     @NamedQuery(name="termine.findNextX",
-                query="SELECT t FROM Termine t WHERE t.user = :user AND t.date_begin > :date"),
+                query="SELECT t FROM Termine t WHERE t.user.name = :username AND t.date_begin > :date"),
     @NamedQuery(name="termine.find",
-                query="SELECT t FROM Termine t WHERE t.user = :user AND t.id = :id"),
+                query="SELECT t FROM Termine t WHERE t.user.name = :username AND t.id = :id"),
     @NamedQuery(name="termine.findByMonth",
-                query="SELECT t FROM Termine t WHERE t.user = :user AND t.date_begin >= :date_begin AND t.date_end < :date_end ORDER BY t.date_begin ASC"),
+                query="SELECT t FROM Termine t WHERE t.user.name = :username AND t.date_begin >= :date_begin AND t.date_end < :date_end ORDER BY t.date_begin ASC"),
 })
 public class Termine implements Serializable {
     private static final long serialVersionUID = 1L;

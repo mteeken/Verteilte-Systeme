@@ -6,13 +6,10 @@
 
 package server;
 
-import controller.NutzerController;
 import controller.TermineController;
 import exceptions.PasswordEmptyException;
 import java.io.IOException;
 import java.security.DigestException;
-import java.text.SimpleDateFormat;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import module.Nutzer;
 import module.Terminart;
 import module.Termine;
 
@@ -77,8 +73,8 @@ public class Modify extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = null;
-        session = request.getSession();
+
+        HttpSession session = request.getSession();
         if (session == null) {
             response.sendRedirect("index.jsp");
         } 
@@ -98,6 +94,7 @@ public class Modify extends HttpServlet {
         writer.println("<body>");
 
         writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
+        writer.println("<a href=\"logout.jsp\">Ausloggen</a><br/>");
         writer.println("<h1>Terminkalender</h1><BR />");
         
         if (this.errorMessage != null)
@@ -109,8 +106,8 @@ public class Modify extends HttpServlet {
             Integer id = Integer.parseInt(request.getParameterValues("id")[0]);  
 
             TermineController tc = new TermineController();
-            Termine t = tc.getTermin(id);
-
+            String name = session.getAttribute("name").toString();
+            Termine t = tc.getTermin(name, id);
 
             writer.println("<form action=\"modify.jsp\" method=\"POST\">");
                 writer.println("<input type=\"hidden\" name=\"id\" value=\"" + t.getId() + "\" /><br>");
@@ -131,8 +128,6 @@ public class Modify extends HttpServlet {
                 writer.println("</select>");
                 writer.println("<BR /><BR />");
                 writer.println("<input type=\"submit\" value=\"Eingabe\" />");
-            writer.println("</form>");
-
             writer.println("</form>");
         } catch (Exception e) {
             writer.println("<h2>" + e.getMessage() + "</h2>");

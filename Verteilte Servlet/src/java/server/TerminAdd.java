@@ -6,13 +6,10 @@
 
 package server;
 
-import controller.NutzerController;
 import controller.TermineController;
 import exceptions.PasswordEmptyException;
 import java.io.IOException;
 import java.security.DigestException;
-import java.text.SimpleDateFormat;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -20,9 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import module.Nutzer;
 import module.Terminart;
-import module.Termine;
 
 /**
  *
@@ -97,6 +92,7 @@ public class TerminAdd extends HttpServlet {
         writer.println("<body>");
        
         writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
+        writer.println("<a href=\"logout.jsp\">Ausloggen</a><br/>");
         writer.println("<h1>Terminkalender</h1><BR />");
         
         if (this.errorMessage != null)

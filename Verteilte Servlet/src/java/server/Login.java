@@ -79,10 +79,13 @@ public class Login extends HttpServlet {
         writer.println("</head>");
         writer.println("<body>");
        
-       if (this.errorMessage != null)
-            writer.println("<b>" + this.errorMessage + "</b>");
+       
         writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
         writer.println("<h1>Terminkalender</h1><BR />");
+        
+        if (this.errorMessage != null)
+            writer.println("<b>" + this.errorMessage + "</b><br />");
+        
         writer.println("<h2>Zum Verwalten der Termine loggen sie sich bitte ein</h2>");
         writer.println("<form action=\"login.jsp\" method=\"POST\">");
         writer.println("<label for=\"name\">Name:</label>");

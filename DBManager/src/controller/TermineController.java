@@ -56,7 +56,7 @@ public class TermineController {
         try {
             Nutzer n = new NutzerController().getUserByName(username);
             return em.createNamedQuery("termine.find", Termine.class)
-                .setParameter("id", id).setParameter("user", n).getSingleResult();
+                .setParameter("id", id).setParameter("username", n.getName()).getSingleResult();
         } catch (Exception e) {
             throw new Exception("Termin konnte nicht gefunden werden");
         }   
@@ -79,7 +79,7 @@ public class TermineController {
             Nutzer n = new NutzerController().getUserByName(username);
             return em.createNamedQuery("termine.findNextX", Termine.class)
                 .setParameter("date", date)
-                .setParameter("user", n)
+                .setParameter("username", n.getName())
                 .setMaxResults(nummer)
                 .getResultList();
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class TermineController {
         try {
             Nutzer n = new NutzerController().getUserByName(username);
             return this.em.createQuery("Select t FROM Termine t", Termine.class)
-                    .setParameter("user", n)
+                    .setParameter("username", n.getName())
                     .getResultList();
         } catch (Exception e) {
             throw new Exception("Keine Termine vorhanden");
@@ -121,7 +121,7 @@ public class TermineController {
             return em.createNamedQuery("termine.findByMonth", Termine.class)
                 .setParameter("date_begin", date_begin)
                 .setParameter("date_end", date_end)
-                .setParameter("user", n)
+                .setParameter("username", n.getName())
                 .getResultList();
         } catch (Exception e) {
             throw new Exception("Keine Termine vorhanden");
