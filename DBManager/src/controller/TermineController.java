@@ -91,7 +91,7 @@ public class TermineController {
    public List<Termine> getAllTermine(String username) throws Exception{
         try {
             Nutzer n = new NutzerController().getUserByName(username);
-            return this.em.createQuery("Select t FROM Termine t", Termine.class)
+            return this.em.createNamedQuery("termine.findAll", Termine.class)
                     .setParameter("username", n.getName())
                     .getResultList();
         } catch (Exception e) {
