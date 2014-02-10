@@ -178,7 +178,7 @@ public class TermineController {
             throw new TerminIDEmptyException("Es wurde kein Termin angegeben");
         }
         try {
-             Termine t = em.createNamedQuery("termine.find", Termine.class)
+             Termine t = em.createNamedQuery("termine.delete", Termine.class)
                 .setParameter("id", id).getSingleResult();
              
             em.getTransaction().begin();

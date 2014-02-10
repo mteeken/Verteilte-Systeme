@@ -10,6 +10,7 @@ import controller.TermineController;
 import java.rmi.RemoteException;
 import exceptions.PasswordEmptyException;
 import exceptions.PasswordToShortException;
+import exceptions.TerminIDEmptyException;
 import exceptions.TerminWithNoDateException;
 import exceptions.UsernameEmptyException;
 import java.rmi.server.UnicastRemoteObject;
@@ -33,19 +34,16 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
     
 
     @Override
-    public boolean login(String username, String password) throws RemoteException {
+    public boolean login(String username, String password) throws RemoteException
+                    ,PasswordEmptyException,UsernameEmptyException,Exception{
         try{
             this.aktuellerNutzer = this.nutzer.getUser(username, password);
             return true;
-        }catch(PasswordEmptyException pe){
-            System.out.println("Passwort leer");
-            return false;
-        }catch(UsernameEmptyException ue){
-            System.out.println("Benutzername leer");
-            return false;
+        }catch(  PasswordEmptyException | UsernameEmptyException pe){
+            throw pe;
         }catch(Exception e){
             System.out.println("Nutzer nicht gefunden");
-        return false;
+            throw e;
         }
     }
 
@@ -55,26 +53,32 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
     }
 
     @Override
-    public boolean terminAnlegen(String date_begin, String date_end, String title,  String ort, Terminart art) throws RemoteException {
+    public boolean terminAnlegen(String date_begin, String date_end, String title,  String ort, Terminart art) throws RemoteException
+    ,TerminWithNoDateException,ParseException,Exception{
        try{
            this.termine.setTermin(title, date_begin,date_end,ort,art,this.aktuellerNutzer.getName());
            return true;
        }catch(TerminWithNoDateException t){
-           System.out.println("Termin hat keine Daten");
-           return false;
+           throw t;
        }catch(ParseException p){
-           System.out.println("Parsing-Fehler");
-           return false;
+           throw p;
        }catch(Exception e){
-           System.out.println("unerwarteter Fehler");
-           e.printStackTrace();
-           return false;
+           throw e;
        }
     }
 
     @Override
-    public boolean terminBearbeiten() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean terminBearbeiten(Integer id, String title, String date_begin, String date_end, 
+           String ort, Terminart art) throws RemoteException, TerminIDEmptyException,ParseException {
+        try{
+            this.termine.modifyTermin(id, title, date_begin, date_end, ort, art);
+            return true;
+        }catch(  TerminIDEmptyException | ParseException e){
+            throw e;
+        }catch(Exception ex) {
+            System.out.println("Unerwarter Fehler");
+            return false;
+        }
     }
 
     @Override
@@ -88,27 +92,33 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
     }
 
     @Override
-    public boolean terminLoeschen() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean terminLoeschen(int id) throws RemoteException, TerminIDEmptyException{
+        try{
+           this.termine.deleteTermin(id);
+           return true;
+        }catch(TerminIDEmptyException ie){
+            throw ie;
+        }catch(Exception e){
+            System.out.println("unerwarteter Fehler");
+            return false;
+        }
     }
 
     @Override
-    public boolean registrieren(String username, String passwort) throws RemoteException {
+    public boolean registrieren(String username, String passwort) throws RemoteException,UsernameEmptyException,
+            PasswordEmptyException,PasswordToShortException,Exception {
         try{
             this.nutzer.setUser(username, passwort,passwort);
             return true;
         }catch(UsernameEmptyException ue){
-                System.out.println("Username leer");
-            return false;
+            throw ue;
         }catch(PasswordEmptyException pe ){
-            System.out.println("Passwort leer");
-            return false;
+            throw pe;
         }catch(PasswordToShortException pe){
-            System.out.println("Passwort zu kurz");
-            return false;
-        } catch (Exception ex) {
+            throw pe;
+        }catch (Exception ex) {
             System.out.println("unerwarteter Fehler");
-            return false;
+            throw ex;
         }
     }
     

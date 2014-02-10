@@ -7,11 +7,19 @@ package Client;
 import IO.EinUndAusgabe;
 import Interface.Constant;
 import Interface.RemoteInterface;
+import exceptions.PasswordEmptyException;
+import exceptions.PasswordToShortException;
+import exceptions.TerminIDEmptyException;
+import exceptions.TerminWithNoDateException;
+import exceptions.UsernameEmptyException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.text.ParseException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import module.Terminart;
 import module.Termine;
 
@@ -68,15 +76,15 @@ public class RMIClient {
     }
         
     private void nutzerAnlegen(){
-        String username;
+        
         String passwort;
         Boolean angelegt;
         try{
             System.out.println("Nutzernamen eingeben");
-            username = this.io.leseString();
+            this.username = this.io.leseString();
             System.out.println("Passwort eingeben");
             passwort = this.io.leseString();
-            angelegt = this.remote.registrieren(username, passwort);
+            angelegt = this.remote.registrieren(this.username, passwort);
             if(angelegt){
                System.out.println("Nutzer wurde angelegt");
             }else{
@@ -84,6 +92,12 @@ public class RMIClient {
             }
         }catch(RemoteException re){
             System.out.println("Verbindung nicht möglich");
+        }catch (PasswordEmptyException ex) {
+            System.out.println("Kein Passwort angegeben");
+        }catch (PasswordToShortException ex) {
+           System.out.println("Passwort zu kurz");
+        }catch (Exception ex) {
+           System.out.println("Inerwarteter Fehler");
         }
             
     }
@@ -106,21 +120,45 @@ public class RMIClient {
             }
         }catch(RemoteException re){
             System.out.println("Verbindung nicht möglich");
+        }catch (UsernameEmptyException ex) {
+            System.out.println("Username nicht angegeben");
+        } catch (Exception ex) {
+            System.out.println("Unerwarteter Fehler");
         }
     }
     
-    public void termineAnzeigen(){
+    private void termineAnzeigen(){
         try{
           this.termine = this.remote.termineAnzeigenStart(this.username);
           if(termine==null){
               System.out.println("Keine Termine vorhanden");
           }else{
               for(Termine t : this.termine){
-                  t.toString();
+                  System.out.println(t.toString());
               }
           }
         }catch(RemoteException re){
-            
+            System.out.println("Verbindung fehlgeschlagen");
+        }
+    }
+    
+    public void terminLoeschen(){
+        int nummer; 
+        boolean geloescht;
+        this.termineAnzeigen();
+        System.out.println("Bitte Nummer angeben: ");
+        nummer = this.io.leseInteger();
+        try{
+            geloescht = this.remote.terminLoeschen(nummer);
+            if(geloescht){
+                System.out.println("Termin wurde geloescht");
+            }else{
+                System.out.println("Termin konnte nicht gelöscht werden");
+            }
+        }catch(RemoteException re){
+            System.out.println("Verbindung fehlgeschlagen");
+        }catch(TerminIDEmptyException ie){
+            System.out.println("Keine TerminId angegeben");
         }
     }
     
@@ -156,6 +194,59 @@ public class RMIClient {
                 System.out.println("Etwas ist schief gelaufen");
             }
         }catch(RemoteException re){
+            System.out.println("Verbindung fehlgeschlagen");
+        }catch(TerminWithNoDateException te){
+            System.out.println("Keine Termin Id angegeben");
+        }catch(ParseException pe){
+            System.out.println("Terminformat nicht eingehalten");
+        }catch(Exception e){
+            System.out.println("Unerwarteter Fehler");
+        }
+    }
+    
+    private void terminBearbeiten(){
+        int nummer; 
+        boolean geaendert;
+        String date_begin;
+        String date_end;
+        String title;
+        String ort;
+        int auswahl;
+        Terminart art;
+        this.termineAnzeigen();
+        System.out.println("Bitte Nummer angeben: ");
+        nummer = this.io.leseInteger();
+        try{
+            System.out.println("Termine im Format yyyy-MM-dd HH:mm angeben");
+            System.out.println("Startdatum angeben");
+            date_begin = this.io.leseString();
+            System.out.println("Enddatum angeben");
+            date_end = this.io.leseString();
+            System.out.println("Termintitel angeben");
+            title = this.io.leseString();
+            System.out.println("Ort angeben");
+            ort = this.io.leseString();
+            System.out.println("Terminart wahlen\n"
+                                +"(0) Geburtstag\n"
+                                +"(1) Arbeit\n"
+                                +"(2) Freizeit\n"
+                                +"(3) Feiertag");
+            auswahl = this.io.leseInteger();
+            art = this.getTerminart(auswahl);
+            geaendert = this.remote.terminBearbeiten(nummer,title,date_begin,date_end,ort,art);
+            if(geaendert){
+                System.out.println("Termin wurde geändert");
+            }else{
+                System.out.println("Termin wurde nicht geändert");
+            }
+        }catch(RemoteException re){
+            System.out.println("Verbindung fehlgeschlagen");
+        }catch(TerminIDEmptyException te){
+            System.out.println("Keine TerminId angegeben");
+        }catch(ParseException e){
+            System.out.println("Termin nicht im richtigen Format angegeben");
+        }catch (Exception ex) {
+           System.out.println("Unerwarteter Fehler");
         }
     }
     
@@ -186,7 +277,8 @@ public class RMIClient {
                     + " (0) abmelden\n"
                     + " (1) Termin anlegen\n"
                     + " (2) Termin bearbeiten\n"
-                    + " (3) Termin loeschen");
+                    + " (3) Termin loeschen\n"
+                    + " (4) alle Termine anzeigen");
             eingabe = this.io.leseInteger();
             switch (eingabe) {
                 case 0:
@@ -195,6 +287,13 @@ public class RMIClient {
                     this.terminAnlegen();
                     break;
                 case 2:
+                    this.terminBearbeiten();
+                    break;
+                case 3:
+                    this.terminLoeschen();
+                    break;
+                case 4:
+                    this.termineAnzeigen();
                     break;
             }
         }
