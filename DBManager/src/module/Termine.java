@@ -64,10 +64,10 @@ public class Termine implements Serializable {
     public Termine(String title, String date_begin, String date_end,
            String ort, Terminart art, Nutzer n) throws ParseException {
 
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date dateBegin = isoFormat.parse(date_begin);
-        Date dateEnd = isoFormat.parse(date_end);
+        SimpleDateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        localFormat.setTimeZone(TimeZone.getDefault());
+        Date dateBegin = localFormat.parse(date_begin);
+        Date dateEnd = localFormat.parse(date_end);
         
         this.date_begin = new Timestamp(dateBegin.getTime());
         this.date_end = new Timestamp(dateEnd.getTime());
@@ -92,7 +92,7 @@ public class Termine implements Serializable {
     public void setDate_begin(String date_begin) throws ParseException {
         
         SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        isoFormat.setTimeZone(TimeZone.getDefault());
         this.date_begin = new Timestamp(isoFormat.parse(date_begin).getTime());
     }
 
@@ -103,7 +103,7 @@ public class Termine implements Serializable {
     public void setDate_end(String date_end)throws ParseException {
         
         SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        isoFormat.setTimeZone(TimeZone.getDefault());
         this.date_end = new Timestamp(isoFormat.parse(date_end).getTime());
     }
 

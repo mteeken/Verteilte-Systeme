@@ -25,8 +25,8 @@ import module.Termine;
  * @author Nugget
  */
 public class ServerImplementation extends UnicastRemoteObject implements RemoteInterface{
-    private final TermineController termine = new TermineController();
-    private final NutzerController nutzer = new NutzerController();
+    private TermineController termine = new TermineController();
+    private NutzerController nutzer = new NutzerController();
     private Nutzer aktuellerNutzer;
     
     public ServerImplementation() throws RemoteException{

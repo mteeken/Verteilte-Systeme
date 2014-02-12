@@ -62,6 +62,7 @@ public class TerminByMonth extends HttpServlet {
         writer.println("<html>");
         writer.println("<head>");
             writer.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"resources/custom.css\">");
+            writer.println("<meta http-equiv=\"refresh\" content=\"5; URL=month.jsp\">");
             writer.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
             writer.println("<title>Terminkalender</title>");
         writer.println("</head>");
@@ -114,8 +115,10 @@ public class TerminByMonth extends HttpServlet {
                     writer.println(t.getTitle());
                     String date_begin = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_begin());
                     String date_end = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(t.getDate_end());
-                    writer.println("Anfang: " + date_begin);
-                    writer.println("Ende: " + date_end);
+                    writer.println("<b>Anfang:</b> " + date_begin);
+                    writer.println("<b>Ende:</b> " + date_end);
+                    writer.println("<b>Ort:</b> " + t.getOrt());
+                    writer.println("<b>Terinart:</b> " + t.getArt().toString());
                     writer.println("<a href=\"delete.jsp?id=" + t.getId() + "\">Termin löschen</a>");
                     writer.println("<a href=\"modify.jsp?id=" + t.getId() + "\">Termin bearbeiten</a>");
                     writer.println("</div>");

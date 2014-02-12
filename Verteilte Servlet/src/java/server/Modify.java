@@ -114,9 +114,9 @@ public class Modify extends HttpServlet {
                 writer.println("<label for=\"title\">Title:</label>");
                 writer.println("<input type=\"text\" id=\"title\" name=\"title\" value=\"" + t.getTitle() + "\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Anfang:</label>");
-                writer.println("<input type=\"date\" name=\"date_begin\" value=\"" + t.getDate_begin().toString() + "\" /><br><br>");
+                writer.println("<input type=\"text\" name=\"date_begin\" value=\"" + t.getDate_begin().toString() + "\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Ende:</label>");
-                writer.println("<input type=\"date\" name=\"date_end\" value=\"" + t.getDate_begin().toString() + "\" /><br><br>");
+                writer.println("<input type=\"text\" name=\"date_end\" value=\"" + t.getDate_begin().toString() + "\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Ort:</label>");
                 writer.println("<input type=\"text\" name=\"ort\" value=\"" + t.getOrt().toString() + "\" /><br><br>");
                 writer.println("<label for=\"datum_begin\">Art:</label>");
