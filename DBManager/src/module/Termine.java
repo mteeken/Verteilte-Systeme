@@ -34,6 +34,8 @@ import javax.persistence.NamedQuery;
                 query="SELECT t FROM Termine t WHERE t.user.name = :username AND t.date_begin > :date"),
     @NamedQuery(name="termine.find",
                 query="SELECT t FROM Termine t WHERE t.user.name = :username AND t.id = :id"),
+     @NamedQuery(name="termine.delete",
+                query="SELECT t FROM Termine t WHERE t.id = :id"),
     @NamedQuery(name="termine.findByMonth",
                 query="SELECT t FROM Termine t WHERE t.user.name = :username AND t.date_begin >= :date_begin AND t.date_end < :date_end ORDER BY t.date_begin ASC"),
 })
