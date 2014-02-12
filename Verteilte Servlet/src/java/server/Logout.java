@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author mteeken
  */
-@WebServlet(name = "Logout", urlPatterns = {"/Logout.jsp"})
+@WebServlet(name = "Logout", urlPatterns = {"/logout.jsp"})
 public class Logout extends HttpServlet {
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException {
