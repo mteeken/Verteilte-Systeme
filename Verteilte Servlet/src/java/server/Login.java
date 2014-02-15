@@ -23,9 +23,22 @@ import module.Nutzer;
 @WebServlet(name = "Login", urlPatterns = {"/login.jsp"})
 public class Login extends HttpServlet {
     
+    /**
+     * Speichert die Nachricht aus einer Exception
+     */
     private String errorMessage;
+    /**
+     * Bestimmt ob nach erfolgreicher anfrage weitergeleitet wird
+     */
     private Boolean sendRedirect = false;
     
+    /**
+     * Verarbeitet die POST Anfrage und überprüft ob es den User gibt und loggt ihn anschließend ein
+     * @param HttpServletRequest req
+     * @param HttpServletResponse res
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
         throws ServletException, IOException {
 
@@ -83,9 +96,10 @@ public class Login extends HttpServlet {
         writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
         writer.println("<h1>Terminkalender</h1><BR />");
         
-        if (this.errorMessage != null)
+        if (this.errorMessage != null) {
             writer.println("<b>" + this.errorMessage + "</b><br />");
-        
+            this.errorMessage = null;
+        }
         writer.println("<h2>Zum Verwalten der Termine loggen sie sich bitte ein</h2>");
         writer.println("<form action=\"login.jsp\" method=\"POST\">");
         writer.println("<label for=\"name\">Name:</label>");

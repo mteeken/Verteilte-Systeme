@@ -18,6 +18,14 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "Logout", urlPatterns = {"/logout.jsp"})
 public class Logout extends HttpServlet {
+    
+    /**
+     * Loggt den User aus
+     * @param HttpServletRequest req
+     * @param HttpServletResponse res
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException {
         //res.setContentType("text/html;charset=UTF-8");

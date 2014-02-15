@@ -27,7 +27,14 @@ public class Delete extends HttpServlet {
      private String errorMessage;
      private Boolean sendRedirect = false;
     
-         
+    /**
+     * 
+     * Verarbeitet die Delete Anfrage und löscht einen Termin
+     * @param HttpServletRequest request
+     * @param HttpServletResponse esponse
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         
@@ -87,16 +94,5 @@ public class Delete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        HttpSession session = null;
-        session = request.getSession();
-        if (session == null) {
-            response.sendRedirect("index.jsp");
-        } else {
-            processRequest(request, response);
-        
-            if (this.sendRedirect == false)
-                this.doGet(request, response);
-        }
-
     }
 }

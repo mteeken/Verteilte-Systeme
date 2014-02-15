@@ -26,17 +26,13 @@ import module.Termine;
 @WebServlet(name = "TerminList", urlPatterns = {"/terminlist.jsp"})
 public class TerminList extends HttpServlet {
     
-     private String errorMessage;
-     private Boolean sendRedirect = false;
-    
-         
-    protected void processRequest(HttpServletRequest req, HttpServletResponse res)
-        throws ServletException, IOException {
-        
-    }
-     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+     /**
+     * Speichert die Nachricht aus einer Exception
+     */
+    private String errorMessage;
+ 
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Listet die nächsten 10 Termine auf
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -69,8 +65,10 @@ public class TerminList extends HttpServlet {
         writer.println("<a href=\"logout.jsp\">Ausloggen</a><br/>");
         writer.println("<h1>Terminkalender</h1><BR />");
         
-        if (this.errorMessage != null)
+        if (this.errorMessage != null) {
             writer.println("<b>" + this.errorMessage + "</b>");
+            this.errorMessage = null;
+        }
         
         writer.println("<h2>Ihre nächsten Termine: </h2>");
 
@@ -102,21 +100,5 @@ public class TerminList extends HttpServlet {
         writer.println("</div></div>");
         writer.println("</body>");
         writer.println("</html>");
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-        
-        if (this.sendRedirect == false)
-            this.doGet(request, response);
     }
 }

@@ -24,8 +24,22 @@ import module.Nutzer;
 @WebServlet(name = "Register", urlPatterns = {"/register.jsp"})
 public class Register extends HttpServlet {
     
+    /**
+     * Speichert die Nachricht aus einer Exception
+     */
     private String errorMessage;
+    /**
+     * Bestimmt ob bereits ein Redirect gesendet wurde
+     */
     private Boolean sendRedirect = false;
+    
+    /**
+     * Verarbeitet die POST Anfrage und registriert einen neuen Nutzer
+     * @param HttpServletRequest req
+     * @param HttpServletResponse res
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
     throws ServletException, IOException {
 
@@ -84,9 +98,11 @@ public class Register extends HttpServlet {
        writer.println("<div class=\"wrapper\"><div class=\"spacer\">");
        writer.println("<h1>Terminkalender</h1><BR />");
        
-       if (this.errorMessage != null)
+       if (this.errorMessage != null) {
             writer.println("<b>" + this.errorMessage + "</b><br/>");
-       
+            this.errorMessage = null;
+       }
+ 
        writer.println("<h2>Bitte geben sie Ihren Namen und Ihr Passwort ein: </h2>");
        writer.println("<form action=\"register.jsp\" method=\"POST\">");
        writer.println("<label for=\"name\">Namen:</label>");

@@ -27,10 +27,22 @@ import module.Terminart;
 @WebServlet(name = "TerminAdd", urlPatterns = {"/addtermin.jsp"})
 public class TerminAdd extends HttpServlet {
     
-     private String errorMessage;
-     private Boolean sendRedirect = false;
+    /**
+     * Speichert die Nachricht aus einer Exception
+     */
+    private String errorMessage;
+    /**
+     * Bestimmt ob bereits ein Redirect gesendet wurde
+     */
+    private Boolean sendRedirect = false;
     
-         
+    /**
+     * Verarbeitet die POST Anfrage und fügt einen neuen Termin hinzu
+     * @param HttpServletRequest req
+     * @param HttpServletResponse res
+     * @throws ServletException
+     * @throws IOException 
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         

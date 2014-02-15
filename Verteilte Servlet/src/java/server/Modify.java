@@ -27,10 +27,24 @@ import module.Termine;
 @WebServlet(name = "Modify", urlPatterns = {"/modify.jsp"})
 public class Modify extends HttpServlet {
     
-     private String errorMessage;
-     private Boolean sendRedirect = false;
+     /**
+     * Speichert die Nachricht aus einer Exception
+     */
+    private String errorMessage;
+    /**
+     * Bestimmt ob bereits ein Redirect gesendet wurde
+     */
+    private Boolean sendRedirect = false;
     
-         
+    
+    /**
+     * 
+     * Ändert nach erfolgreicher Übergabe der Terminparameter diesen
+     * @param HttpServletRequest request
+     * @param HttpServletResponse response
+     * @throws ServletException
+     * @throws IOException 
+     */     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         
@@ -97,9 +111,10 @@ public class Modify extends HttpServlet {
         writer.println("<a href=\"logout.jsp\">Ausloggen</a><br/>");
         writer.println("<h1>Terminkalender</h1><BR />");
         
-        if (this.errorMessage != null)
+        if (this.errorMessage != null) {
             writer.println("<b>" + this.errorMessage + "</b>");
-        
+            this.errorMessage = null;
+        }
         writer.println("<h2>Termin ändern: </h2>");
         
         try {
