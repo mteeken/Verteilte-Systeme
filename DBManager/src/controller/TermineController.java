@@ -23,7 +23,7 @@ import module.Terminart;
 import module.Termine;
 
 /**
- *
+ * Klasse zur Verwaltung von Terminen
  * @author mteeken
  */
 public class TermineController {
@@ -47,6 +47,13 @@ public class TermineController {
         monate.add("Dezember");
     }
     
+    /**
+     * Ermittelt einen Termin
+     * @param String username
+     * @param Integer id
+     * @return Termine
+     * @throws Exception 
+     */
     public Termine getTermin(String username, Integer id) throws Exception {
         
         if (id == null) {
@@ -62,6 +69,13 @@ public class TermineController {
         }   
     }
     
+    /**
+     * Ermittelt die nächsten Termine
+     * @param String username
+     * @param Integer nummer
+     * @return
+     * @throws Exception 
+     */
     public List<Termine> getNextXTermine(String username, int nummer) throws Exception {
 
         if (nummer <= 0) {
@@ -87,7 +101,12 @@ public class TermineController {
         }
     }
     
-    
+    /**
+     * Ermittelt alle Termine eines Nutzers
+     * @param String username
+     * @return List<Termine>
+     * @throws Exception 
+     */
    public List<Termine> getAllTermine(String username) throws Exception{
         try {
             Nutzer n = new NutzerController().getUserByName(username);
@@ -99,7 +118,14 @@ public class TermineController {
         }
    }
     
-    public List<Termine> getByMonth(String username, int month) throws Exception {
+   /**
+    * Ermittelt die Termine eines Monats
+    * @param String username
+    * @param int month
+    * @return List<Termine>
+    * @throws Exception 
+    */
+   public List<Termine> getByMonth(String username, int month) throws Exception {
 
         if (month <= 0) {
             throw new InvalidParameterException();
@@ -128,6 +154,16 @@ public class TermineController {
         }
     }
     
+   /**
+    * Speichert einen Termin
+    * @param title String
+    * @param date_begin String
+    * @param date_end String
+    * @param ort String
+    * @param art Terminart
+    * @param username
+    * @throws Exception 
+    */
     public void setTermin(String title, String date_begin, String date_end, 
            String ort, Terminart art, String username) throws Exception {
 
@@ -147,6 +183,16 @@ public class TermineController {
         }   
     }
 
+    /**
+     * Ändert einen Termin
+     * @param id
+     * @param title
+     * @param date_begin
+     * @param date_end
+     * @param ort
+     * @param art
+     * @throws Exception 
+     */
     public void modifyTermin(Integer id, String title, String date_begin, String date_end, 
            String ort, Terminart art) throws Exception {
         
@@ -173,6 +219,11 @@ public class TermineController {
         }   
     }
     
+    /**
+     * Löscht einen Termin
+     * @param id
+     * @throws Exception 
+     */
     public void deleteTermin(Integer id) throws Exception {
         if (id == null) {
             throw new TerminIDEmptyException("Es wurde kein Termin angegeben");
@@ -188,6 +239,12 @@ public class TermineController {
             throw new Exception("Termin konnte nicht gelöscht werden");
         } 
     }
+    
+    /**
+     * Ermittelt die Monats Bezeichnung
+     * @param index
+     * @return 
+     */
     
     public String getMonat(int index) {
         return monate.get(index - 1);

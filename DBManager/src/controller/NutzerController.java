@@ -16,8 +16,9 @@ import module.Nutzer;
 import exceptions.PasswordEmptyException;
 import exceptions.UsernameEmptyException;
 import exceptions.PasswordToShortException;
+
 /**
- *
+ * Klasse zur Ermittlung und Verwaltung der Nutzer
  * @author mteeken
  */
 public class NutzerController {
@@ -25,6 +26,13 @@ public class NutzerController {
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Verteilte_DB_ManagerPU");
     private EntityManager em = emf.createEntityManager();
 
+    /**
+     * Ermittelt einen Nutzer
+     * @param String name 
+     * @param String password
+     * @return Nutzer
+     * @throws Exception 
+     */
     public Nutzer getUser(String name, String password) throws Exception {
         
         if (password == null || password.equals(""))
@@ -42,6 +50,12 @@ public class NutzerController {
         }   
     }
     
+    /**
+     * Ermittelt einen Nutzer über den Username
+     * @param String name
+     * @return Nutzer
+     * @throws Exception 
+     */
     public Nutzer getUserByName(String name) throws Exception {
         
         if (name == null || name.equals(""))
@@ -55,6 +69,14 @@ public class NutzerController {
         }   
     }
     
+    /**
+     * Speichert ein Nutzer
+     * @param String name
+     * @param String password
+     * @param String password_repeat
+     * @return Nutzer
+     * @throws Exception 
+     */
     public Nutzer setUser(String name, String password, String password_repeat) throws Exception {
         
         if (password == null || password.equals(""))
@@ -85,6 +107,12 @@ public class NutzerController {
         return n;
     }
         
+    /**
+     * Codiert das Passwort 
+     * @param String password
+     * @return String
+     * @throws DigestException 
+     */
     private String hash(String password) throws DigestException {
         String result = "";
         try {
