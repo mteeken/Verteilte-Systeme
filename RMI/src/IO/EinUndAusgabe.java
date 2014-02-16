@@ -119,51 +119,5 @@ public class EinUndAusgabe {
     }
 
     return ergebnis;
-  }
-
-  /**
-   * Methode zur Ausgabe eines &uuml;bergebenen Textes. Es
-   * wird kein Zeilenumbruch angeh&auml;ngt.
-   * 
-   * @param obj
-   *          auszugebendes Objekt (nutzt jeweiliges toString)
-   */
-  public void ausgeben(Object obj) {
-    System.out.print(obj.toString());
-  }
-
-  /**
-   * Methode zur C-formatierten Ausgabe verschiedener
-   * Variablen und Textelemente
-   * 
-   * @param text
-   *          auszugebender Text, der Spezialzeichen wie %d
-   *          als Platzhalter f&uuml;r auszugebene Variablen
-   *          enthalten kann
-   * @param objekte
-   *          Objekte, die an Stelle der Platzhalter im Text
-   *          ausgegeben werden sollen
-   */
-  public void formatiertAusgeben(String text,
-      Object... objekte) {
-    System.out.printf(text, objekte);
-  }
-
-  /**
-   * Methode zur Erzeugung einer ganzahligen Zufallszahl
-   * zwischen (einschlie&szlig;lich) den &uuml;bergebenen
-   * Grenzen. Es wird erwartet und nicht gepr&uuml;ft, dass
-   * der Endwert nicht kleiner als der Startwert ist.
-   * 
-   * @param start
-   *          minimal m&ouml;glicher Zufallswert
-   * @param ende
-   *          maximal m&ouml;glicher Zufallswert
-   * @return zuf&auml;lliger Wert zwischen start und ende
-   *         (auch diese beiden Werte sind m&ouml;glich
-   */
-  public int zufall(int start, int ende) {
-    return start
-        + (int) (Math.random() * (ende - start + 1));
-  }
+  } 
 }

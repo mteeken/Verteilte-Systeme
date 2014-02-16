@@ -5,17 +5,23 @@
 package server;
 
 import Interface.Constant;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 /**
- *
- * @author Nugget
+ * Klasse, welche den Server startet, die Ports bereitstellt und so eine
+ * Verbindung ermöglicht
+ * @author Philipp Nardmann
  */
 public class Server {
-     public static void main(String[] args) throws RemoteException{
+
+    /**
+     * Ausführbare Methode zum Starten des Servers
+     * @param args 
+     * @throws RemoteException tritt bei Verbindungsfehlern auf
+     */
+    public static void main(String[] args) throws RemoteException{
         try
         {
             ServerImplementation server = new ServerImplementation();

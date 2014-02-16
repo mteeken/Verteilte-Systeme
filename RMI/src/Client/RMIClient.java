@@ -18,14 +18,14 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.text.ParseException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import module.Terminart;
 import module.Termine;
 
 /**
- *
+ * Klasse zur Initialisierung eines Clients, der per Remote die Serverfunktionen
+ * aufruft
  * @author Philipp Nardmann
+ * 
  */
 public class RMIClient {
     private Registry registry;
@@ -34,16 +34,27 @@ public class RMIClient {
     private String username;
     private List<Termine> termine = null;
     
+    /**
+     * Konstruktor zum Erzeugen eines Clients
+     */
     public RMIClient(){
         this.io = new EinUndAusgabe();
     }
     
+    /**
+     * Methode zum Ausführen und initialisieren des Clients
+     * @param args
+     */
     public static void main(String args[]){
       RMIClient rmi =  new RMIClient();
       rmi.verbindungHerstellen();
       rmi.dialog();
     }
     
+    /*
+    * Methode, um eine Verbindung zum Server herzustellen
+    *
+    */
     private void verbindungHerstellen(){
         try{
             this.registry = LocateRegistry.getRegistry("localhost", Constant.RMI_PORT);
@@ -52,8 +63,12 @@ public class RMIClient {
             System.out.println("Verbindung fehlgeschlagen");
         }
     }
-    
-        public void dialog() {
+
+    /**
+     * 
+     * Textbasiertes Auswahlmenü zum Bedienen des Clients
+     */
+    public void dialog() {
         int eingabe = -1;
         while (eingabe != 0) {
             System.out.println(
@@ -74,7 +89,12 @@ public class RMIClient {
             }
         }
     }
-        
+    
+     /**
+     * Methode zum Anlegen eines Nutzers. Es muss per Eingabefenster ein
+     * Username und ein Passwort eingegeben werden
+     * 
+     */
     private void nutzerAnlegen(){
         
         String passwort;
@@ -101,7 +121,10 @@ public class RMIClient {
         }
             
     }
-    
+    /*
+    * Methode zum Anmelden beim Server
+    *
+    */
     private void anmelden(){
         String passwort;
         Boolean login;
@@ -127,6 +150,9 @@ public class RMIClient {
         }
     }
     
+    /**
+     * Methode zum Anzeigen aller Termine des Nutzers
+     */
     private void termineAnzeigen(){
         try{
           this.termine = this.remote.termineAnzeigenStart(this.username);
@@ -142,7 +168,10 @@ public class RMIClient {
         }
     }
     
-    public void terminLoeschen(){
+    /**
+     * Methode zum Löschen eines Termins
+     */
+    private void terminLoeschen(){
         int nummer; 
         boolean geloescht;
         this.termineAnzeigen();
@@ -162,6 +191,10 @@ public class RMIClient {
         }
     }
     
+    /*
+    * Methode zum Anlegen eines neuen Termins
+    *
+    */
     private void terminAnlegen(){
         String date_begin;
         String date_end;
@@ -204,6 +237,10 @@ public class RMIClient {
         }
     }
     
+    /*
+    * Methode zum Bearbeiten eines vorhandenen Termins
+    *
+    */
     private void terminBearbeiten(){
         int nummer; 
         boolean geaendert;
@@ -250,6 +287,10 @@ public class RMIClient {
         }
     }
     
+     /**
+     * Methode, welche den richtigen Enumtypen zurückgibt
+     * @param auswahl Integerparameter der aus dem Eingabemenü übergeben wird
+     */
     private Terminart getTerminart(int auswahl){
         Terminart rueckgabe = null;
         switch(auswahl){
@@ -269,6 +310,10 @@ public class RMIClient {
         return rueckgabe;
     }
     
+    /**
+     * Methode zur Nutzerführung. Bietet die Möglichkeit die implementierten
+     * Methoden zu benutzen
+     */
     private void eingeloggtDialog(){
         int eingabe = -1;
         while (eingabe != 0) {

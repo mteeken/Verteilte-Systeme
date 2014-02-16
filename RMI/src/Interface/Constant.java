@@ -5,8 +5,8 @@
 package Interface;
 
 /**
- *
- * @author Nugget
+ * Klasse zur Verwaltung der Ports und des Namespaces
+ * @author Philipp Nardmann
  */
 public class Constant {
     public static final String RMI_ID = "RMI";
