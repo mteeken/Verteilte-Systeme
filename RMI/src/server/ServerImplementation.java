@@ -39,8 +39,8 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
     /**
      * Methode, die ermittelt ob ein Nutzer in der Datenbank vorhanden ist, um
      * Zugriff auf die weiteren Servermethoden zu gewähren
-     * @param username Nutzername zur Identifizierung des Nutzers
-     * @param password Passwort zur Authentifizierung des Nutzers
+     * @param username String zur Identifizierung des Nutzers
+     * @param password String zur Authentifizierung des Nutzers
      * @return
      * @throws RemoteException  wird bei Fehlverbindung geworfen
      * @throws PasswordEmptyException wird geworfen, wenn kein Passwort übergeben
@@ -66,10 +66,10 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
 
     /**
      * Methode um einen neuen Termin in die Datenbank zu schreiben.
-     * @param date_begin Anfangsdatum des Termins
-     * @param date_end Enddatum des Termins
-     * @param title Titel des Termins
-     * @param ort Ort des Termins
+     * @param date_begin String als Anfangsdatum des Termins
+     * @param date_end String als Enddatum des Termins
+     * @param title String alsTitel des Termins
+     * @param ort  String als Ort des Termins
      * @param art Art des Termins (als Auswahl einer Enumeration)
      * @return Rückmeldung, ob der Termin angelegt wurde.
      * @throws RemoteException Tritt bei Verbindungsfehler auf
@@ -95,13 +95,13 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
 
     /**
      * Methode die einen bereits vorhandenen Termin des Nutzers anpasst
-     * @param id Parameter zur Identifikation des Termins der geändert werden
+     * @param id Integer : Parameter zur Identifikation des Termins der geändert werden
      * soll
-     * @param title neuer Titel des Termins
-     * @param date_begin neues Anfangsdatum des Termins
-     * @param date_end neues Enddatum des Termins
-     * @param ort neuer Ort des Termins
-     * @param art neuer Typ des Termins
+     * @param title String : neuer Titel des Termins
+     * @param date_begin String : neues Anfangsdatum des Termins
+     * @param date_end String : neues Enddatum des Termins
+     * @param ort String : neuer Ort des Termins
+     * @param art Terminart : neuer Typ des Termins
      * @return Rückmeldung, ob der Termin geändert wurde.
      * @throws RemoteException tritt bei Verbindungsfehler auf
      * @throws ParseException  tritt auf falls das Datum falsch angegeben 
@@ -124,7 +124,7 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
 
     /**
      * Gibt bei der Anmeldung eines Nutzers alle Termine zurück
-     * @param username Nutzername zur Identifikation der Termine
+     * @param username String : Nutzername zur Identifikation der Termine
      * @return Liste aller Termine des Nutzers
      * @throws RemoteException tritt bei Verbindungsfehlern auf
      */
@@ -140,7 +140,7 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
 
     /**
      * Methode zum Löschen eines Termins 
-     * @param id Identifikationsnummer des zu löschenden Termins
+     * @param id Integer : Identifikationsnummer des zu löschenden Termins
      * @return Rückmeldung, ob der Termin geändert wurde.
      * @throws RemoteException tritt bei Verbindungsfehler auf
      * @throws TerminIDEmptyException tritt auf falls keine ID des Termins
@@ -162,8 +162,8 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
      /**
      * Methode, die ermittelt ob ein Nutzer in der Datenbank vorhanden ist, um
      * Zugriff auf die weiteren Servermethoden zu gewähren
-     * @param username Nutzername zur Identifizierung des Nutzers
-     * @param passwort Passwort zur Authentifizierung des Nutzers
+     * @param username String : Nutzername zur Identifizierung des Nutzers
+     * @param passwort String : Passwort zur Authentifizierung des Nutzers
      * @return
      * @throws RemoteException  wird bei Fehlverbindung geworfen
      * @throws PasswordEmptyException wird geworfen, wenn kein Passwort übergeben
@@ -188,6 +188,16 @@ public class ServerImplementation extends UnicastRemoteObject implements RemoteI
         }catch (Exception ex) {
             System.out.println("unerwarteter Fehler");
             throw ex;
+        }
+    }
+
+    @Override
+    public List<Termine> nextXTermine(String username) throws RemoteException {
+         try{
+            return this.termine.getNextXTermine(username, 10);
+        }catch(Exception e){
+            System.out.println("Keine Termine vorhanden");
+            return null;
         }
     }
     

@@ -323,7 +323,8 @@ public class RMIClient {
                     + " (1) Termin anlegen\n"
                     + " (2) Termin bearbeiten\n"
                     + " (3) Termin loeschen\n"
-                    + " (4) alle Termine anzeigen");
+                    + " (4) alle Termine anzeigen\n"
+                    + " (5) die nächsten Termine anzeigen\n");
             eingabe = this.io.leseInteger();
             switch (eingabe) {
                 case 0:
@@ -340,7 +341,26 @@ public class RMIClient {
                 case 4:
                     this.termineAnzeigen();
                     break;
+                case 5:
+                    this.naechsteTermineAnzeigen();
+                    break;
+                    
             }
         }
     };
+
+    private void naechsteTermineAnzeigen() {  
+          try{
+            this.termine = this.remote.nextXTermine(this.username);
+            if(termine==null){
+                System.out.println("Keine Termine vorhanden");
+            }else{
+                for(Termine t : this.termine){
+                    System.out.println(t.toString());
+                }
+            }
+        }catch(RemoteException re){
+            System.out.println("Verbindung fehlgeschlagen");
+        }
+    }
 }
